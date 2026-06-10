@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infor HMS - Start Center (Voice Block Enabled)</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --infor-bg: #f3f4f6;
+      --infor-green: #22c55e;
+      --infor-green-dark: #16a34a;
+      --infor-header-black: #111827;
+      --infor-text-main: #1f2937;
+      --infor-text-muted: #6b7280;
+      --infor-border: #e5e7eb;
+      --infor-card-bg: #ffffff;
+      
+      /* Voice Copilot Accent colors - Synced with Infor UI ecosystem */
+      --voice-accent: #0284c7;
+      --voice-glow: rgba(2, 132, 199, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background-color: var(--infor-bg);
+      color: var(--infor-text-main);
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* --- TOP NAV BAR (System Style) --- */
+    .sys-header {
+      background-color: #0b1a24;
+      color: #ffffff;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--infor-green-dark);
+    }
+
+    .sys-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* --- LOGO UPDATE --- */
+    .sys-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .sys-app-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .sys-meta-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    /* --- INFOR GREEN START CENTER BANNER --- */
+    .start-center-banner {
+      background-color: var(--infor-green-dark);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .start-center-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .start-center-date {
+      font-size: 12px;
+      opacity: 0.9;
+      text-align: right;
+    }
+
+    /* --- WORKSPACE LAYOUT GRID --- */
+    .workspace-wrapper {
+      display: grid;
+      grid-template-columns: 260px 1fr 300px;
+      flex: 1;
+      overflow: hidden;
+      background-color: #f9fafb;
+    }
+
+    /* Lane panel containers */
+    .lane-panel {
+      border-right: 1px solid var(--infor-border);
+      display: flex;
+      flex-direction: column;
+      background-color: var(--infor-card-bg);
+    }
+
+    .lane-panel.right-lane {
+      border-right: none;
+      border-left: 1px solid var(--infor-border);
+    }
+
+    .lane-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--infor-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      color: #374151;
+      background-color: #fafafa;
+    }
+
+    .lane-content {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* --- COMPONENT STYLES --- */
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--infor-border);
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--infor-header-black);
+    }
+
+    /* Action Grid Blocks */
+    .launch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+      gap: 200px; 
+      margin-bottom: 32px;
+      justify-content: center;
+      align-content: center;
+    }
+
+    .launch-card {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      aspect-ratio: 1 / 1; 
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      padding: 50px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px; 
+      letter-spacing: 0.5px;
+      color: #374151;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: all 0.15s ease-in-out;
+    }
+
+    .launch-card:hover {
+      border-color: var(--infor-green-dark);
+      background-color: #f0fdf4;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.06);
+    }
+
+    /* Big KPI Block */
+    .kpi-container {
+      border: 1px solid var(--infor-border);
+      border-radius: 4px;
+      padding: 24px;
+      background-color: #ffffff;
+      max-width: 280px;
+      margin: 0 auto;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .kpi-value-box {
+      background-color: #e5e7eb;
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+      padding: 16px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--infor-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .message-text-block {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #374151;
+    }
+
+    /* --- REFINED MIC ACTION TRIGGER BUTTON --- */
+    .voice-trigger-fab {
+      position: fixed;
+      bottom: 80px; /* Moved up away from the immediate bottom edge/footer */
+      right: 324px; 
+      width: 52px;
+      height: 52px;
+      border-radius: 50%; /* Rounded for a modern, recognizable FAB format */
+      background: #001cef;
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .voice-trigger-fab:hover {
+      color: #f9f9f9;
+      background-color: var(--voice-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(252, 0, 0, 0.3);
+    }
+
+    .voice-trigger-fab:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(2, 132, 199, 0.2);
+    }
+
+    .voice-trigger-fab svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* --- COPILOT PANEL OVERLAY --- */
+    .voice-insight-overlay {
+      position: fixed;
+      top: 104px; 
+      right: -420px; 
+      width: 300px;
+      height: calc(100vh - 128px);
+      background-color: var(--infor-card-bg); 
+      color: var(--infor-text-main);
+      box-shadow: -2px 4px 12px rgba(0,0,0,0.08);
+      border-left: 1px solid var(--infor-border);
+      transition: right 0.25s ease-in-out;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .voice-insight-overlay.active {
+      right: 0;
+    }
+
+    .insight-header {
+      padding: 12px 16px;
+      background: #fafafa;
+      border-bottom: 1px solid var(--infor-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .insight-header h3 {
+      font-size: 14px;
+      color: var(--infor-header-black);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-insight-btn {
+      background: transparent;
+      border: none;
+      color: var(--infor-text-muted);
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .close-insight-btn:hover {
+      color: var(--infor-header-black);
+    }
+
+    .insight-body {
+      padding: 16px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .agent-glass-card {
+      background: #ffffff;
+      border: 1px solid var(--infor-border);
+      border-radius: 4px;
+      padding: 14px;
+    }
+
+    .agent-glass-card h4 {
+      font-size: 11px;
+      color: var(--infor-text-muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .audio-wave-anim {
+      height: 24px;
+      background: #f3f4f6;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid var(--infor-border);
+    }
+    .audio-wave-anim::after {
+      content: '';
+      position: absolute;
+      left: -50%; top: 0; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(2, 132, 199, 0.15), transparent);
+      animation: sweep 1.5s infinite linear;
+    }
+    @keyframes sweep { to { left: 150%; } }
+
+    .btn-action-confirm {
+      width: 100%;
+      padding: 10px;
+      background: var(--voice-accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .btn-action-confirm:hover { background: #0369a1; }
+
+    .system-footer-status {
+      background-color: #e5e7eb;
+      padding: 4px 16px;
+      font-size: 11px;
+      color: #4b5563;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #d1d5db;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="sys-header">
+    <div class="sys-brand">
+      <img src="inforlogo.png" alt="Infor" class="sys-logo" />
+      <div class="sys-app-name">Infor HMS</div>
+    </div>
+    <div class="sys-meta-controls">
+      <span>Infor Favorites</span>
+      <span>Support Portal</span>
+      <span>HMS - Related</span>
+      <strong>User: Sujatha Sharma.</strong>
+    </div>
+  </header>
+
+  <section class="start-center-banner">
+    <div class="start-center-title">Start Center</div>
+    <div class="start-center-date">
+      <div>HMS700</div>
+      <div style="font-weight: 600;">10-JUN-2026</div>
+    </div>
+  </section>
+
+  <div class="workspace-wrapper">
+    
+    <aside class="lane-panel">
+      <div class="lane-header">
+        <span>Inbox</span>
+        <span style="font-size: 12px; opacity: 0.7;">⚙</span>
+      </div>
+      <div class="lane-content">
+        <div class="metric-row">
+          <span style="color: var(--infor-text-muted);">Actual room count</span>
+          <span class="metric-value">212</span>
+        </div>
+        <div class="metric-row" style="margin-top: 12px;">
+          <span style="color: var(--infor-text-muted);">Rooms Left</span>
+          <span class="metric-value" id="disp-rooms-left">24</span>
+        </div>
+        <div class="metric-row">
+          <span style="color: var(--infor-text-muted);">Checked In Guests</span>
+          <span class="metric-value" id="disp-checked-in">126</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="lane-panel">
+      <div class="lane-header">
+        <span>Launch Center</span>
+      </div>
+      <div class="lane-content">
+        
+        <div class="launch-grid">
+          <div class="launch-card">PROPERTY A/R ACCOUNT</div>
+          <div class="launch-card">TRANSACTION TOTALS</div>
+          <div class="launch-card">GUEST STAY</div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--infor-border); margin-bottom: 20px;" />
+
+        <div style="font-weight: 600; color: #4b5563; margin-bottom: 12px; font-size: 13px;">KPIs</div>
+        
+        <div class="kpi-container">
+          <div class="kpi-value-box" id="main-kpi-val">
+            10,181.82 *
+          </div>
+          <div class="kpi-label">30 day rev</div>
+        </div>
+
+      </div>
+    </main>
+
+    <aside class="lane-panel right-lane">
+      <div class="lane-header">
+        <span>Messages</span>
+        <span style="font-size: 12px; color: var(--infor-green-dark);">▶</span>
+      </div>
+      <div class="lane-content">
+        <div class="message-text-block">
+          <p style="font-weight: 600; margin-bottom: 8px;">Dear Valued Customer,</p>
+          <p style="color: #4b5563; margin-bottom: 12px;">
+            You may face temporary disruptions while using the HMS Chat option. Please use alternative routes to reach out to Support if you are unable to connect via standard channels.
+          </p>
+          <p style="color: #4b5563;">
+            At this time, the system Voice Block Copilot extension modules are fully operational for shift transition handovers.
+          </p>
+          <div style="font-size: 11px; color: var(--infor-text-muted); margin-top: 20px; text-align: right;">
+            31-JUL-2026
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <button class="voice-trigger-fab" id="voiceFab" title="Toggle Voice Block Copilot Insights Panel">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+    </svg>
+  </button>
+
+  <div class="voice-insight-overlay" id="voiceInsightPanel">
+    <div class="insight-header">
+      <h3>
+        <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%;"></span>
+        VoiceBlock Copilot Engine
+      </h3>
+      <button class="close-insight-btn" id="closeInsight">&times;</button>
+    </div>
+    
+    <div class="insight-body">
+      
+      <div class="agent-glass-card">
+        <h4>Live Audio Capture Status</h4>
+        <div class="audio-wave-anim"></div>
+        <div style="font-size: 13px; color: var(--voice-accent); font-weight: 500; margin-top: 6px;" id="transcriptPreview">
+          "Assign room 412 to Vikram Nair"
+        </div>
+      </div>
+
+      <div class="agent-glass-card">
+        <h4>Extracted Command Context</h4>
+        <div style="font-size: 14px; font-weight: 700; color: var(--infor-header-black); margin-bottom: 6px;" id="actionTargetText">
+          Assign Room 412 &rarr; Vikram Nair
+        </div>
+        <p style="font-size: 12px; color: var(--infor-text-muted);">
+          Detected Group Target: <span style="color: var(--infor-text-main); font-weight: 500;">Sharma Wedding Block</span>
+        </p>
+      </div>
+
+      <div class="agent-glass-card">
+        <h4>Pending Active Workspace Tasks</h4>
+        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight: 500;">
+          <span style="color: var(--infor-text-main);">Room Moves Pending</span>
+          <span style="color:#d97706; font-weight:700;">1</span>
+        </div>
+      </div>
+
+      <div class="agent-glass-card">
+        <h4>Group Metrics</h4>
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color: var(--infor-text-muted);">Rooms Left</span>
+            <span style="font-weight:600; color:var(--infor-header-black);">24 <span style="font-size:11px; color:var(--voice-accent); font-weight:normal; background:#f0f9ff; padding:2px 6px; border-radius:2px; margin-left:4px;">Available</span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color: var(--infor-text-muted);">Checked In</span>
+            <span style="font-weight:600; color:var(--infor-header-black);">126 <span style="font-size:11px; color:var(--infor-text-muted); font-weight:normal; background:#f3f4f6; padding:2px 6px; border-radius:2px; margin-left:4px;">Guests</span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color: var(--infor-text-muted);">Pending Tasks</span>
+            <span style="font-weight:600; color:var(--infor-header-black);">18 <span style="font-size:11px; color:#d97706; font-weight:normal; background:#fffbeb; padding:2px 6px; border-radius:2px; margin-left:4px;">Tasks</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-glass-card">
+        <h4>Shift Handover Summary</h4>
+        <div style="font-size:11px; color:var(--infor-text-muted); margin-bottom:8px; font-style:italic;">Snapshot for next shift</div>
+        <div style="display:flex; flex-direction:column; gap:6px; font-size:13px; border-bottom:1px dashed var(--infor-border); padding-bottom:8px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color: var(--infor-text-muted);">Pending Arrivals</span>
+            <span style="font-weight:600;">12</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color: var(--infor-text-muted);">Room Assignments</span>
+            <span style="font-weight:600;">3</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color: var(--infor-text-muted);">Room Swaps</span>
+            <span style="font-weight:600;">3</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color: var(--infor-text-muted);">AI Confirmations</span>
+            <span style="font-weight:600; color:var(--infor-green-dark);">18</span>
+          </div>
+        </div>
+        <div style="font-size:12px; background:#fafafa; border:1px solid var(--infor-border); padding:8px; border-radius:2px;">
+          <strong style="font-size:11px; color:var(--infor-text-muted); display:block; margin-bottom:4px; text-transform:uppercase;">Quick Notes:</strong>
+          <div style="color:var(--infor-text-main); margin-bottom:2px;">• Room 412 flagged for VIP</div>
+          <div style="color:var(--infor-text-main);">• MIC Pending: 18 (check special requests)</div>
+        </div>
+      </div>
+
+      <div style="margin-top: auto;">
+        <button class="btn-action-confirm" id="executeVoiceAction">Confirm & Apply</button>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    const voiceFab = document.getElementById('voiceFab');
+    const voiceInsightPanel = document.getElementById('voiceInsightPanel');
+    const closeInsight = document.getElementById('closeInsight');
+    const executeVoiceAction = document.getElementById('executeVoiceAction');
+
+    function toggleVoicePanel() {
+      voiceInsightPanel.classList.toggle('active');
+    }
+
+    voiceFab.addEventListener('click', toggleVoicePanel);
+    closeInsight.addEventListener('click', () => {
+      voiceInsightPanel.classList.remove('active');
+    });
+
+    executeVoiceAction.addEventListener('click', () => {
+      document.getElementById('disp-rooms-left').textContent = '23';
+      document.getElementById('disp-checked-in').textContent = '127';
+      document.getElementById('main-kpi-val').textContent = '10,593.82 *';
+      
+      alert('Voice task successfully executed: Room 412 has been allocated to Vikram Nair.');
+      voiceInsightPanel.classList.remove('active');
+    });
+  </script>
+</body>
+</html>
+
+``` 
